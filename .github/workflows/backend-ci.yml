@@ -1,0 +1,44 @@
+name: Backend CI
+
+on:
+  pull_request:
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+
+# docs/DEVELOPMENT_PLAN.md Phase 1, Day 5: "Basic CI skeleton: lint + mypy +
+# pytest on PR." Dependency vulnerability scanning (pip-audit) and SAST
+# (Bandit/Semgrep) are Phase 9 (Days 45-47) — not added here yet.
+jobs:
+  lint-type-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: backend/requirements-dev.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Ruff (lint)
+        run: ruff check .
+
+      - name: Black (format check)
+        run: black --check .
+
+      - name: mypy (strict)
+        run: mypy app tests
+
+      - name: pytest
+        run: pytest

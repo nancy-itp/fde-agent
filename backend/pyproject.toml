@@ -1,0 +1,33 @@
+[tool.black]
+line-length = 120
+target-version = ["py312"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.flake8-bugbear]
+# FastAPI's dependency-injection idiom is a function call in an argument
+# default by design (`Depends(...)`) — not the mutable-default footgun B008
+# otherwise catches.
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Path", "fastapi.Body", "fastapi.Header"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+disallow_untyped_defs = true
+disallow_any_generics = true
+warn_return_any = true
+plugins = ["pydantic.mypy"]
+
+# Alembic migration files follow a generated template (untyped Union[str, None]
+# style annotations) that predates this config — not worth fighting mypy over.
+[[tool.mypy.overrides]]
+module = "alembic.versions.*"
+ignore_errors = true
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

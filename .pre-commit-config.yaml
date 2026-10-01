@@ -1,0 +1,24 @@
+repos:
+  - repo: local
+    hooks:
+      - id: black
+        name: black (backend)
+        entry: black --config backend/pyproject.toml
+        language: system
+        types: [python]
+        files: ^backend/
+
+      - id: ruff
+        name: ruff (backend)
+        entry: ruff check --fix --config backend/pyproject.toml
+        language: system
+        types: [python]
+        files: ^backend/
+
+      - id: mypy
+        name: mypy (backend, strict)
+        entry: bash -c 'cd backend && mypy app tests'
+        language: system
+        types: [python]
+        files: ^backend/
+        pass_filenames: false

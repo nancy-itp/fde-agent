@@ -1,0 +1,31 @@
+# Secrets / local config
+.env
+.env.*
+!.env.example
+
+# Personal study notes, not project documentation
+DEV_NOTES.md
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Alembic
+backend/alembic/versions/__pycache__/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
